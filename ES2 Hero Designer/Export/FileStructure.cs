@@ -119,14 +119,14 @@ namespace ES2_Hero_Designer.Export
 	<!-- Icons: several sizes can be set for different uses -->
     <!-- ModelPath: the path to the animated model of the hero. Here, we have none so that the icons are used instead. -->
 
-    <HeroGuiElement Name=""Neptune"">
+    <HeroGuiElement Name=""%Name%"">
         <Title>%%Name%Title</Title>
         <Description>%%Name%Description</Description>
         <Icons>
             <!-- These textures are used in tooltips, and in the notification if the animated model fails to load. -->
-            <Icon Size=""Medium"" Path=""Gui/%Name%Medium""/>
-            <Icon Size=""Large"" Path=""Gui/%Name%Large""/>
-            <Icon Size=""Mood"" Path=""Gui/%Name%Mood""/>
+            <Icon Size=""Medium"" Path=""Gui/%Root%%Name%Medium""/>
+            <Icon Size=""Large"" Path=""Gui/%Root%%Name%Large""/>
+            <Icon Size=""Mood"" Path=""Gui/%Root%%Name%Mood""/>
         </Icons>
     </HeroGuiElement>
 	

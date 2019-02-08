@@ -27,7 +27,7 @@ namespace ES2_Hero_Designer
             ToolTips.SetToolTip(this.PicBox_GUIMood, "Recomended Image Properties: Format: PNG, Width: 1324px, Height: 712px");
             ToolTips.SetToolTip(this.PicBox_ModIcon, "Recomended Image Properties: Width: 480px, Height: 480px");
 
-            ToolTips.SetToolTip(this.Cb_Politics, "1 = Industrialist, 2 = Scientists, 3 = Religious, 4 = Militarists, 5 = Pacifists, 6 = Ecologists");
+            ToolTips.SetToolTip(this.Cb_Politics, "1 = Industrialist, 2 = Scientists, 3 = Pacifists, 4 = Ecologists, 5 = Religious, 6 = Militarists");
         }
 
         private void PicBox_GUILarge_MouseDoubleClick(object sender, MouseEventArgs e)
