@@ -70,7 +70,7 @@ namespace ES2_Hero_Designer.Export
         <!-- Add more content to this each time you update the mod -->
         <ReleaseNotes>%WsRelease%</ReleaseNotes>
         <!-- Available tags: AI, Art, Buildings, Gameplay, Improvements, MajorFactions, Maps, MinorFactions, Multiplayer, Other, Resources, Technologies, Units -->
-        <Tags>Gameplay</Tags>
+        <Tags>Gameplay, Heroes</Tags>
 
 		<!-- XML files to load -->
 		<Plugins>
