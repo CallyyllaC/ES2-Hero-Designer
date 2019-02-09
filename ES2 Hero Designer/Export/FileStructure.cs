@@ -124,9 +124,9 @@ namespace ES2_Hero_Designer.Export
         <Description>%%Name%Description</Description>
         <Icons>
             <!-- These textures are used in tooltips, and in the notification if the animated model fails to load. -->
-            <Icon Size=""Medium"" Path=""Gui/%Root%%Name%Medium""/>
-            <Icon Size=""Large"" Path=""Gui/%Root%%Name%Large""/>
-            <Icon Size=""Mood"" Path=""Gui/%Root%%Name%Mood""/>
+            <Icon Size=""Medium"" Path=""Gui/%Name%Medium""/>
+            <Icon Size=""Large"" Path=""Gui/%Name%Large""/>
+            <Icon Size=""Mood"" Path=""Gui/%Name%Mood""/>
         </Icons>
     </HeroGuiElement>
 	
