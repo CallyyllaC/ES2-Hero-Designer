@@ -54,9 +54,9 @@
             this.Lb_WsDescription = new System.Windows.Forms.Label();
             this.Lb_WsTitle = new System.Windows.Forms.Label();
             this.GrpBox_Skills = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.GrpBox_SimulationDescriptors = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.BT_RemoveSkill = new System.Windows.Forms.Button();
+            this.CLB_Skills = new System.Windows.Forms.CheckedListBox();
+            this.BT_AddSkill = new System.Windows.Forms.Button();
             this.GrpBox_Hero = new System.Windows.Forms.GroupBox();
             this.Cb_SkillTree3 = new System.Windows.Forms.ComboBox();
             this.Cb_SkillTree2 = new System.Windows.Forms.ComboBox();
@@ -74,6 +74,17 @@
             this.label3 = new System.Windows.Forms.Label();
             this.Bt_Save = new System.Windows.Forms.Button();
             this.ToolTips = new System.Windows.Forms.ToolTip(this.components);
+            this.LB_GameDir_Dir = new System.Windows.Forms.Label();
+            this.GrpBox_Dir = new System.Windows.Forms.GroupBox();
+            this.TB_GameDir_Open = new System.Windows.Forms.Button();
+            this.LB_GameDir_Info = new System.Windows.Forms.Label();
+            this.TB_GameDir_Dir = new System.Windows.Forms.TextBox();
+            this.GrpBox_HeroDebug = new System.Windows.Forms.GroupBox();
+            this.CB_HeroFaction = new System.Windows.Forms.ComboBox();
+            this.TB_HeroName = new System.Windows.Forms.TextBox();
+            this.BT_RemoveHero = new System.Windows.Forms.Button();
+            this.CLB_HeroDebug = new System.Windows.Forms.CheckedListBox();
+            this.BT_AddHero = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_GUILarge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_GUIMedium)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_GUIMood)).BeginInit();
@@ -82,8 +93,9 @@
             this.GrpBox_Details.SuspendLayout();
             this.GrpBox_Workshop.SuspendLayout();
             this.GrpBox_Skills.SuspendLayout();
-            this.GrpBox_SimulationDescriptors.SuspendLayout();
             this.GrpBox_Hero.SuspendLayout();
+            this.GrpBox_Dir.SuspendLayout();
+            this.GrpBox_HeroDebug.SuspendLayout();
             this.SuspendLayout();
             // 
             // PicBox_GUILarge
@@ -132,7 +144,8 @@
             this.GrpBox_Images.Controls.Add(this.PicBox_GUILarge);
             this.GrpBox_Images.Controls.Add(this.PicBox_GUIMood);
             this.GrpBox_Images.Controls.Add(this.PicBox_GUIMedium);
-            this.GrpBox_Images.Location = new System.Drawing.Point(13, 13);
+            this.GrpBox_Images.Enabled = false;
+            this.GrpBox_Images.Location = new System.Drawing.Point(12, 96);
             this.GrpBox_Images.Name = "GrpBox_Images";
             this.GrpBox_Images.Size = new System.Drawing.Size(1149, 229);
             this.GrpBox_Images.TabIndex = 3;
@@ -193,7 +206,8 @@
             this.GrpBox_Details.Controls.Add(this.Tb_Name);
             this.GrpBox_Details.Controls.Add(this.Lb_Description);
             this.GrpBox_Details.Controls.Add(this.Lb_Name);
-            this.GrpBox_Details.Location = new System.Drawing.Point(13, 249);
+            this.GrpBox_Details.Enabled = false;
+            this.GrpBox_Details.Location = new System.Drawing.Point(12, 332);
             this.GrpBox_Details.Name = "GrpBox_Details";
             this.GrpBox_Details.Size = new System.Drawing.Size(516, 167);
             this.GrpBox_Details.TabIndex = 4;
@@ -214,6 +228,7 @@
             this.Tb_Name.Name = "Tb_Name";
             this.Tb_Name.Size = new System.Drawing.Size(421, 20);
             this.Tb_Name.TabIndex = 2;
+            this.Tb_Name.TextChanged += new System.EventHandler(this.Tb_Name_TextChanged);
             // 
             // Lb_Description
             // 
@@ -243,9 +258,10 @@
             this.GrpBox_Workshop.Controls.Add(this.Lb_Author);
             this.GrpBox_Workshop.Controls.Add(this.Lb_WsDescription);
             this.GrpBox_Workshop.Controls.Add(this.Lb_WsTitle);
-            this.GrpBox_Workshop.Location = new System.Drawing.Point(13, 423);
+            this.GrpBox_Workshop.Enabled = false;
+            this.GrpBox_Workshop.Location = new System.Drawing.Point(12, 506);
             this.GrpBox_Workshop.Name = "GrpBox_Workshop";
-            this.GrpBox_Workshop.Size = new System.Drawing.Size(516, 181);
+            this.GrpBox_Workshop.Size = new System.Drawing.Size(516, 182);
             this.GrpBox_Workshop.TabIndex = 5;
             this.GrpBox_Workshop.TabStop = false;
             this.GrpBox_Workshop.Text = "Workshop";
@@ -317,43 +333,42 @@
             // 
             // GrpBox_Skills
             // 
-            this.GrpBox_Skills.Controls.Add(this.label1);
+            this.GrpBox_Skills.Controls.Add(this.BT_RemoveSkill);
+            this.GrpBox_Skills.Controls.Add(this.CLB_Skills);
+            this.GrpBox_Skills.Controls.Add(this.BT_AddSkill);
             this.GrpBox_Skills.Enabled = false;
-            this.GrpBox_Skills.Location = new System.Drawing.Point(535, 471);
+            this.GrpBox_Skills.Location = new System.Drawing.Point(535, 554);
             this.GrpBox_Skills.Name = "GrpBox_Skills";
-            this.GrpBox_Skills.Size = new System.Drawing.Size(334, 133);
+            this.GrpBox_Skills.Size = new System.Drawing.Size(310, 300);
             this.GrpBox_Skills.TabIndex = 6;
             this.GrpBox_Skills.TabStop = false;
             this.GrpBox_Skills.Text = "Skills";
             // 
-            // label1
+            // BT_RemoveSkill
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Coming \"Soon\"";
+            this.BT_RemoveSkill.Location = new System.Drawing.Point(8, 270);
+            this.BT_RemoveSkill.Name = "BT_RemoveSkill";
+            this.BT_RemoveSkill.Size = new System.Drawing.Size(115, 23);
+            this.BT_RemoveSkill.TabIndex = 2;
+            this.BT_RemoveSkill.Text = "Remove Selected";
+            this.BT_RemoveSkill.UseVisualStyleBackColor = true;
             // 
-            // GrpBox_SimulationDescriptors
+            // CLB_Skills
             // 
-            this.GrpBox_SimulationDescriptors.Controls.Add(this.label2);
-            this.GrpBox_SimulationDescriptors.Enabled = false;
-            this.GrpBox_SimulationDescriptors.Location = new System.Drawing.Point(875, 471);
-            this.GrpBox_SimulationDescriptors.Name = "GrpBox_SimulationDescriptors";
-            this.GrpBox_SimulationDescriptors.Size = new System.Drawing.Size(287, 98);
-            this.GrpBox_SimulationDescriptors.TabIndex = 7;
-            this.GrpBox_SimulationDescriptors.TabStop = false;
-            this.GrpBox_SimulationDescriptors.Text = "Simulation Descriptors";
+            this.CLB_Skills.FormattingEnabled = true;
+            this.CLB_Skills.Location = new System.Drawing.Point(7, 20);
+            this.CLB_Skills.Name = "CLB_Skills";
+            this.CLB_Skills.Size = new System.Drawing.Size(297, 244);
+            this.CLB_Skills.TabIndex = 1;
             // 
-            // label2
+            // BT_AddSkill
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Coming \"Soon\"";
+            this.BT_AddSkill.Location = new System.Drawing.Point(189, 270);
+            this.BT_AddSkill.Name = "BT_AddSkill";
+            this.BT_AddSkill.Size = new System.Drawing.Size(115, 23);
+            this.BT_AddSkill.TabIndex = 0;
+            this.BT_AddSkill.Text = "Add Skill";
+            this.BT_AddSkill.UseVisualStyleBackColor = true;
             // 
             // GrpBox_Hero
             // 
@@ -371,7 +386,8 @@
             this.GrpBox_Hero.Controls.Add(this.label5);
             this.GrpBox_Hero.Controls.Add(this.label4);
             this.GrpBox_Hero.Controls.Add(this.label3);
-            this.GrpBox_Hero.Location = new System.Drawing.Point(535, 249);
+            this.GrpBox_Hero.Enabled = false;
+            this.GrpBox_Hero.Location = new System.Drawing.Point(534, 332);
             this.GrpBox_Hero.Name = "GrpBox_Hero";
             this.GrpBox_Hero.Size = new System.Drawing.Size(627, 213);
             this.GrpBox_Hero.TabIndex = 8;
@@ -397,31 +413,6 @@
             // Cb_SkillTree1
             // 
             this.Cb_SkillTree1.FormattingEnabled = true;
-            this.Cb_SkillTree1.Items.AddRange(new object[] {
-            "HeroSkillTreeGeneric",
-            "HeroSkillTreeAdmiral",
-            "HeroSkillTreeAdventurer",
-            "HeroSkillTreeAdministrator",
-            "HeroSkillTreeCorporate",
-            "HeroSkillTreeSophons",
-            "HeroSkillTreeCravers",
-            "HeroSkillTreeTerrans",
-            "HeroSkillTreeHoratio",
-            "HeroSkillTreeVenetians",
-            "HeroSkillTreeVampirilis",
-            "HeroSkillTreeTimeLords",
-            "HeroSkillTreeUnfallen",
-            "HeroSkillTreeMinorFaction01",
-            "HeroSkillTreeMinorFaction02",
-            "HeroSkillTreeMinorFaction03",
-            "HeroSkillTreeMinorFaction04",
-            "HeroSkillTreeEndless",
-            "--DLC 1--",
-            "HeroSkillTreeVaulters",
-            "--DLC 2--",
-            "HeroSkillTreeMajorHisshos",
-            "--DLC 3--",
-            "HeroSkillTreeUmbralChoir"});
             this.Cb_SkillTree1.Location = new System.Drawing.Point(93, 127);
             this.Cb_SkillTree1.Name = "Cb_SkillTree1";
             this.Cb_SkillTree1.Size = new System.Drawing.Size(528, 21);
@@ -430,11 +421,6 @@
             // Cb_ShipDesign
             // 
             this.Cb_ShipDesign.FormattingEnabled = true;
-            this.Cb_ShipDesign.Items.AddRange(new object[] {
-            "ShipDesignHeroSmall01Attacker",
-            "ShipDesignHeroSmall02Explorer",
-            "ShipDesignHeroSmall03Supporter",
-            "ShipDesignHeroSmall04Defender"});
             this.Cb_ShipDesign.Location = new System.Drawing.Point(93, 100);
             this.Cb_ShipDesign.Name = "Cb_ShipDesign";
             this.Cb_ShipDesign.Size = new System.Drawing.Size(528, 21);
@@ -443,13 +429,6 @@
             // Cb_Politics
             // 
             this.Cb_Politics.FormattingEnabled = true;
-            this.Cb_Politics.Items.AddRange(new object[] {
-            "HeroPolitics01",
-            "HeroPolitics02",
-            "HeroPolitics03",
-            "HeroPolitics04",
-            "HeroPolitics05",
-            "HeroPolitics06"});
             this.Cb_Politics.Location = new System.Drawing.Point(93, 73);
             this.Cb_Politics.Name = "Cb_Politics";
             this.Cb_Politics.Size = new System.Drawing.Size(528, 21);
@@ -458,11 +437,6 @@
             // Cb_Class
             // 
             this.Cb_Class.FormattingEnabled = true;
-            this.Cb_Class.Items.AddRange(new object[] {
-            "HeroClassAdventurer",
-            "HeroClassAdmiral",
-            "HeroClassCorporate",
-            "HeroClassAdministrator"});
             this.Cb_Class.Location = new System.Drawing.Point(93, 46);
             this.Cb_Class.Name = "Cb_Class";
             this.Cb_Class.Size = new System.Drawing.Size(528, 21);
@@ -471,53 +445,6 @@
             // Cb_Affinity
             // 
             this.Cb_Affinity.FormattingEnabled = true;
-            this.Cb_Affinity.Items.AddRange(new object[] {
-            "HeroAffinitySophons",
-            "HeroAffinityCravers",
-            "HeroAffinityTerrans",
-            "HeroAffinityHoratio",
-            "HeroAffinityVenetians",
-            "HeroAffinityVampirilis",
-            "HeroAffinityTimeLords",
-            "HeroAffinityUnfallen",
-            "HeroAffinityAmoeba",
-            "HeroAffinityBenthys",
-            "HeroAffinityBots",
-            "HeroAffinityDeuyivans",
-            "HeroAffinityHaroshems",
-            "HeroAffinityHisshos",
-            "HeroAffinityMavros",
-            "HeroAffinityPilgrims",
-            "HeroAffinityZvali",
-            "HeroAffinityTikanans",
-            "HeroAffinityGnashasts",
-            "HeroAffinityEyders",
-            "HeroAffinityNiris",
-            "HeroAffinityBhagabas",
-            "HeroAffinityRemnant",
-            "HeroAffinityPulsos",
-            "HeroAffinityGreenman",
-            "HeroAffinityPirates",
-            "HeroAffinityInsectoids",
-            "HeroAffinityAdvanced",
-            "HeroAffinityPrimitives",
-            "HeroAffinityEndless",
-            "--DLC 1--",
-            "HeroAffinitySistersOfMercy",
-            "HeroAffinityVaulters",
-            "--DLC 2--",
-            "HeroAffinityMajorHisshos",
-            "HeroAffinityIllo",
-            "--DLC 3--",
-            "HeroAffinityUmbralChoir",
-            "HeroAffinityMinorHacking",
-            "--Update [8]--",
-            "HeroAffinitySowers",
-            "HeroAffinityKalTikMas",
-            "HeroAffinitySefaloros",
-            "HeroAffinityGalvrans",
-            "--Update [10]--",
-            "HeroAffinityHarmony"});
             this.Cb_Affinity.Location = new System.Drawing.Point(93, 19);
             this.Cb_Affinity.Name = "Cb_Affinity";
             this.Cb_Affinity.Size = new System.Drawing.Size(528, 21);
@@ -588,7 +515,8 @@
             // 
             // Bt_Save
             // 
-            this.Bt_Save.Location = new System.Drawing.Point(875, 573);
+            this.Bt_Save.Enabled = false;
+            this.Bt_Save.Location = new System.Drawing.Point(12, 824);
             this.Bt_Save.Name = "Bt_Save";
             this.Bt_Save.Size = new System.Drawing.Size(287, 29);
             this.Bt_Save.TabIndex = 9;
@@ -596,19 +524,128 @@
             this.Bt_Save.UseVisualStyleBackColor = true;
             this.Bt_Save.Click += new System.EventHandler(this.Bt_Save_Click);
             // 
+            // LB_GameDir_Dir
+            // 
+            this.LB_GameDir_Dir.AutoSize = true;
+            this.LB_GameDir_Dir.Location = new System.Drawing.Point(6, 26);
+            this.LB_GameDir_Dir.Name = "LB_GameDir_Dir";
+            this.LB_GameDir_Dir.Size = new System.Drawing.Size(166, 13);
+            this.LB_GameDir_Dir.TabIndex = 10;
+            this.LB_GameDir_Dir.Text = "Endless Space 2 Game Directory:";
+            // 
+            // GrpBox_Dir
+            // 
+            this.GrpBox_Dir.Controls.Add(this.TB_GameDir_Open);
+            this.GrpBox_Dir.Controls.Add(this.LB_GameDir_Info);
+            this.GrpBox_Dir.Controls.Add(this.TB_GameDir_Dir);
+            this.GrpBox_Dir.Controls.Add(this.LB_GameDir_Dir);
+            this.GrpBox_Dir.Location = new System.Drawing.Point(12, 13);
+            this.GrpBox_Dir.Name = "GrpBox_Dir";
+            this.GrpBox_Dir.Size = new System.Drawing.Size(1149, 77);
+            this.GrpBox_Dir.TabIndex = 11;
+            this.GrpBox_Dir.TabStop = false;
+            this.GrpBox_Dir.Text = "Game Directory";
+            // 
+            // TB_GameDir_Open
+            // 
+            this.TB_GameDir_Open.Location = new System.Drawing.Point(1068, 21);
+            this.TB_GameDir_Open.Name = "TB_GameDir_Open";
+            this.TB_GameDir_Open.Size = new System.Drawing.Size(75, 23);
+            this.TB_GameDir_Open.TabIndex = 13;
+            this.TB_GameDir_Open.Text = "Open";
+            this.TB_GameDir_Open.UseVisualStyleBackColor = true;
+            this.TB_GameDir_Open.Click += new System.EventHandler(this.TB_GameDir_Open_Click);
+            // 
+            // LB_GameDir_Info
+            // 
+            this.LB_GameDir_Info.AutoSize = true;
+            this.LB_GameDir_Info.Location = new System.Drawing.Point(6, 54);
+            this.LB_GameDir_Info.Name = "LB_GameDir_Info";
+            this.LB_GameDir_Info.Size = new System.Drawing.Size(161, 13);
+            this.LB_GameDir_Info.TabIndex = 12;
+            this.LB_GameDir_Info.Text = "Please locate the game directory";
+            // 
+            // TB_GameDir_Dir
+            // 
+            this.TB_GameDir_Dir.Location = new System.Drawing.Point(178, 23);
+            this.TB_GameDir_Dir.Name = "TB_GameDir_Dir";
+            this.TB_GameDir_Dir.Size = new System.Drawing.Size(884, 20);
+            this.TB_GameDir_Dir.TabIndex = 11;
+            this.TB_GameDir_Dir.TextChanged += new System.EventHandler(this.TB_GameDir_Dir_TextChanged);
+            // 
+            // GrpBox_HeroDebug
+            // 
+            this.GrpBox_HeroDebug.Controls.Add(this.CB_HeroFaction);
+            this.GrpBox_HeroDebug.Controls.Add(this.TB_HeroName);
+            this.GrpBox_HeroDebug.Controls.Add(this.BT_RemoveHero);
+            this.GrpBox_HeroDebug.Controls.Add(this.CLB_HeroDebug);
+            this.GrpBox_HeroDebug.Controls.Add(this.BT_AddHero);
+            this.GrpBox_HeroDebug.Enabled = false;
+            this.GrpBox_HeroDebug.Location = new System.Drawing.Point(851, 554);
+            this.GrpBox_HeroDebug.Name = "GrpBox_HeroDebug";
+            this.GrpBox_HeroDebug.Size = new System.Drawing.Size(310, 300);
+            this.GrpBox_HeroDebug.TabIndex = 7;
+            this.GrpBox_HeroDebug.TabStop = false;
+            this.GrpBox_HeroDebug.Text = "Hero Debug";
+            // 
+            // CB_HeroFaction
+            // 
+            this.CB_HeroFaction.FormattingEnabled = true;
+            this.CB_HeroFaction.Location = new System.Drawing.Point(8, 244);
+            this.CB_HeroFaction.Name = "CB_HeroFaction";
+            this.CB_HeroFaction.Size = new System.Drawing.Size(175, 21);
+            this.CB_HeroFaction.TabIndex = 4;
+            // 
+            // TB_HeroName
+            // 
+            this.TB_HeroName.Location = new System.Drawing.Point(6, 273);
+            this.TB_HeroName.Name = "TB_HeroName";
+            this.TB_HeroName.Size = new System.Drawing.Size(176, 20);
+            this.TB_HeroName.TabIndex = 3;
+            // 
+            // BT_RemoveHero
+            // 
+            this.BT_RemoveHero.Location = new System.Drawing.Point(189, 242);
+            this.BT_RemoveHero.Name = "BT_RemoveHero";
+            this.BT_RemoveHero.Size = new System.Drawing.Size(115, 23);
+            this.BT_RemoveHero.TabIndex = 2;
+            this.BT_RemoveHero.Text = "Remove Selected";
+            this.BT_RemoveHero.UseVisualStyleBackColor = true;
+            this.BT_RemoveHero.Click += new System.EventHandler(this.BT_RemoveHero_Click);
+            // 
+            // CLB_HeroDebug
+            // 
+            this.CLB_HeroDebug.FormattingEnabled = true;
+            this.CLB_HeroDebug.Location = new System.Drawing.Point(7, 20);
+            this.CLB_HeroDebug.Name = "CLB_HeroDebug";
+            this.CLB_HeroDebug.Size = new System.Drawing.Size(297, 214);
+            this.CLB_HeroDebug.TabIndex = 1;
+            // 
+            // BT_AddHero
+            // 
+            this.BT_AddHero.Location = new System.Drawing.Point(189, 271);
+            this.BT_AddHero.Name = "BT_AddHero";
+            this.BT_AddHero.Size = new System.Drawing.Size(115, 23);
+            this.BT_AddHero.TabIndex = 0;
+            this.BT_AddHero.Text = "Add Hero";
+            this.BT_AddHero.UseVisualStyleBackColor = true;
+            this.BT_AddHero.Click += new System.EventHandler(this.BT_AddHero_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1174, 610);
+            this.AutoScroll = true;
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(1173, 865);
+            this.Controls.Add(this.GrpBox_HeroDebug);
+            this.Controls.Add(this.GrpBox_Dir);
             this.Controls.Add(this.Bt_Save);
             this.Controls.Add(this.GrpBox_Hero);
-            this.Controls.Add(this.GrpBox_SimulationDescriptors);
             this.Controls.Add(this.GrpBox_Skills);
             this.Controls.Add(this.GrpBox_Workshop);
             this.Controls.Add(this.GrpBox_Details);
             this.Controls.Add(this.GrpBox_Images);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
             this.Text = "ESP Hero Designer";
@@ -624,11 +661,12 @@
             this.GrpBox_Workshop.ResumeLayout(false);
             this.GrpBox_Workshop.PerformLayout();
             this.GrpBox_Skills.ResumeLayout(false);
-            this.GrpBox_Skills.PerformLayout();
-            this.GrpBox_SimulationDescriptors.ResumeLayout(false);
-            this.GrpBox_SimulationDescriptors.PerformLayout();
             this.GrpBox_Hero.ResumeLayout(false);
             this.GrpBox_Hero.PerformLayout();
+            this.GrpBox_Dir.ResumeLayout(false);
+            this.GrpBox_Dir.PerformLayout();
+            this.GrpBox_HeroDebug.ResumeLayout(false);
+            this.GrpBox_HeroDebug.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -647,7 +685,6 @@
         private System.Windows.Forms.Label Lb_Description;
         private System.Windows.Forms.GroupBox GrpBox_Workshop;
         private System.Windows.Forms.GroupBox GrpBox_Skills;
-        private System.Windows.Forms.GroupBox GrpBox_SimulationDescriptors;
         private System.Windows.Forms.GroupBox GrpBox_Hero;
         private System.Windows.Forms.Label Lb_ModIcon;
         private System.Windows.Forms.PictureBox PicBox_ModIcon;
@@ -655,8 +692,6 @@
         private System.Windows.Forms.Label Lb_Author;
         private System.Windows.Forms.Label Lb_WsDescription;
         private System.Windows.Forms.Label Lb_WsTitle;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Bt_Save;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
@@ -679,6 +714,20 @@
         public System.Windows.Forms.ComboBox Cb_Politics;
         public System.Windows.Forms.ComboBox Cb_Class;
         public System.Windows.Forms.ComboBox Cb_Affinity;
+        private System.Windows.Forms.Button BT_RemoveSkill;
+        private System.Windows.Forms.CheckedListBox CLB_Skills;
+        private System.Windows.Forms.Button BT_AddSkill;
+        private System.Windows.Forms.Label LB_GameDir_Dir;
+        private System.Windows.Forms.GroupBox GrpBox_Dir;
+        private System.Windows.Forms.Button TB_GameDir_Open;
+        private System.Windows.Forms.Label LB_GameDir_Info;
+        private System.Windows.Forms.TextBox TB_GameDir_Dir;
+        private System.Windows.Forms.GroupBox GrpBox_HeroDebug;
+        private System.Windows.Forms.ComboBox CB_HeroFaction;
+        private System.Windows.Forms.TextBox TB_HeroName;
+        private System.Windows.Forms.Button BT_RemoveHero;
+        private System.Windows.Forms.CheckedListBox CLB_HeroDebug;
+        private System.Windows.Forms.Button BT_AddHero;
     }
 }
 
