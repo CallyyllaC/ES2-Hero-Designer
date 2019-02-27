@@ -80,6 +80,7 @@ namespace ES2_Hero_Designer.Export
                     list.Add(node.Attributes["Name"].Value);
                 }
             }
+            list.Sort();
             return list;
         }
 
@@ -130,16 +131,16 @@ namespace ES2_Hero_Designer.Export
                 List.Add(hero);
             }
 
-            var split = List.GroupBy(c => c.faction).Select(c => c.ToList()).ToList();
+            var split = List.GroupBy(c => c.Faction).Select(c => c.ToList()).ToList();
 
             foreach (var factionlist in split)
             {
-                XmlNode xml = GetDataFactionDebug(dir, factionlist[0].faction);
+                XmlNode xml = GetDataFactionDebug(dir, factionlist[0].Faction);
 
                 foreach (var hero in factionlist)
                 {
                     XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(@"<Command Name = ""RecruitHero"" Arguments = """ + hero.name + @""" />");
+                    doc.LoadXml(@"<Command Name = ""RecruitHero"" Arguments = """ + hero.Name + @""" />");
                     XmlNode newNode = doc.DocumentElement;
                     XmlNode importNode = xml.OwnerDocument.ImportNode(newNode, false);
                     xml.PrependChild(importNode);
@@ -153,7 +154,54 @@ namespace ES2_Hero_Designer.Export
 </Datatable>";
         }
 
+        public static List<HeroSkill> GetSkillList(string dir)
+        {
+            var sims = GetSimList(dir);
+            List<HeroSkill> list = new List<HeroSkill>();
+            foreach (var item in Directory.GetFiles($"{dir}Public\\", $"HeroSkillDefinitions*.xml", SearchOption.AllDirectories))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(item);
+                XmlElement root = doc.DocumentElement;
+                XmlNodeList nodes = root.SelectNodes("//HeroSkillDefinition");
+                foreach (XmlNode node in nodes)
+                {
+                    foreach (XmlNode skill in node.SelectNodes("SkillLevel"))
+                    {
+                        var output = new HeroSkill { Name = skill.Attributes["Name"].Value, XML = skill.InnerXml };
+                        foreach (XmlNode nod in skill.ChildNodes)
+                        {
+                            if (nod.Name.Contains("SimulationDescriptorReference") && nod.Name != "HeroSimulationDescriptorReference")
+                            {
+                                output.DescriptorReference = nod.Name;
+                                output.Skill = nod.Attributes["Name"].Value;
+                                sims.TryGetValue(output.Skill, out output.SimDesc);
+                            }
+                        }
+                        list.Add(output);
+                    }
+                }
+            }
+            list = list.OrderBy(x => x.Skill).ToList();
+            return list;
+        }
 
-
+        public static SortedDictionary<string, string> GetSimList(string dir)
+        {
+            SortedDictionary<string, string> list = new SortedDictionary<string, string>();
+            foreach (var item in Directory.GetFiles($"{dir}Public\\", $"SimulationDescriptors*.xml", SearchOption.AllDirectories))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(item);
+                XmlElement root = doc.DocumentElement;
+                XmlNodeList nodes = root.SelectNodes("//SimulationDescriptor");
+                foreach (XmlNode node in nodes)
+                {
+                    string name = node.Attributes["Name"].Value;
+                    list.Add(name, node.OuterXml);
+                }
+            }
+            return list;
+        }
     }
 }

@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>ES2_Hero_Designer</RootNamespace>
     <AssemblyName>ES2 Hero Designer</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -69,6 +69,12 @@
     <Compile Include="Skills.Designer.cs">
       <DependentUpon>Skills.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkillTrees.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkillTrees.Designer.cs">
+      <DependentUpon>SkillTrees.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ES2HeroDesigner.resx">
       <DependentUpon>ES2HeroDesigner.cs</DependentUpon>
     </EmbeddedResource>
@@ -84,6 +90,9 @@
     </Compile>
     <EmbeddedResource Include="Skills.resx">
       <DependentUpon>Skills.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SkillTrees.resx">
+      <DependentUpon>SkillTrees.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

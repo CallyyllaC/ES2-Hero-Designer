@@ -16,7 +16,7 @@ namespace ES2_Hero_Designer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            Application.Run(new ES2_Hero_Designer());
         }
     }
 }
