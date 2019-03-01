@@ -89,6 +89,9 @@
             this.CLB_HeroDebug = new System.Windows.Forms.CheckedListBox();
             this.BT_AddHero = new System.Windows.Forms.Button();
             this.GrpBox_HeroSkills = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.TB_Hero_Level = new System.Windows.Forms.TextBox();
             this.BT_RemoveHeroSkill = new System.Windows.Forms.Button();
             this.TB_Hero_Skills = new System.Windows.Forms.TextBox();
             this.CLB_Hero_Skills = new System.Windows.Forms.CheckedListBox();
@@ -101,6 +104,7 @@
             this.CLB_Skill_Trees = new System.Windows.Forms.CheckedListBox();
             this.LB_Help = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_GUILarge)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_GUIMedium)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PicBox_GUIMood)).BeginInit();
@@ -685,6 +689,9 @@
             // 
             // GrpBox_HeroSkills
             // 
+            this.GrpBox_HeroSkills.Controls.Add(this.label10);
+            this.GrpBox_HeroSkills.Controls.Add(this.label2);
+            this.GrpBox_HeroSkills.Controls.Add(this.TB_Hero_Level);
             this.GrpBox_HeroSkills.Controls.Add(this.BT_RemoveHeroSkill);
             this.GrpBox_HeroSkills.Controls.Add(this.LB_Skills);
             this.GrpBox_HeroSkills.Controls.Add(this.TB_Hero_Skills);
@@ -697,6 +704,31 @@
             this.GrpBox_HeroSkills.TabIndex = 8;
             this.GrpBox_HeroSkills.TabStop = false;
             this.GrpBox_HeroSkills.Text = "Hero Skills";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(157, 257);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(58, 13);
+            this.label10.TabIndex = 103;
+            this.label10.Text = "Skill Level:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 257);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.TabIndex = 102;
+            this.label2.Text = "Skill Name:";
+            // 
+            // TB_Hero_Level
+            // 
+            this.TB_Hero_Level.Location = new System.Drawing.Point(157, 273);
+            this.TB_Hero_Level.Name = "TB_Hero_Level";
+            this.TB_Hero_Level.Size = new System.Drawing.Size(65, 20);
+            this.TB_Hero_Level.TabIndex = 101;
             // 
             // BT_RemoveHeroSkill
             // 
@@ -712,7 +744,7 @@
             // 
             this.TB_Hero_Skills.Location = new System.Drawing.Point(6, 273);
             this.TB_Hero_Skills.Name = "TB_Hero_Skills";
-            this.TB_Hero_Skills.Size = new System.Drawing.Size(216, 20);
+            this.TB_Hero_Skills.Size = new System.Drawing.Size(145, 20);
             this.TB_Hero_Skills.TabIndex = 22;
             // 
             // CLB_Hero_Skills
@@ -812,6 +844,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.LB_Help);
             this.groupBox1.Controls.Add(this.Bt_Save);
             this.groupBox1.Location = new System.Drawing.Point(12, 694);
@@ -819,6 +852,20 @@
             this.groupBox1.Size = new System.Drawing.Size(516, 157);
             this.groupBox1.TabIndex = 10;
             this.groupBox1.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Cursor = System.Windows.Forms.Cursors.Default;
+            this.textBox1.Location = new System.Drawing.Point(178, 19);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(332, 94);
+            this.textBox1.TabIndex = 34;
+            this.textBox1.Text = "Some of the names here are different than in game, for the major factions these a" +
+    "re:\r\nVodyani\t= Vampirilis\r\nUnited Empire = Terrans\r\nLumeris = Venetians\r\nRiftbor" +
+    "n = TimeLords\r\n";
             // 
             // ES2_Hero_Designer
             // 
@@ -941,6 +988,10 @@
         private System.Windows.Forms.Button BT_SkillTree_Edit;
         private System.Windows.Forms.Button BT_SkillTree_Remove;
         private System.Windows.Forms.Button BT_SkillTree_Add;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox TB_Hero_Level;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

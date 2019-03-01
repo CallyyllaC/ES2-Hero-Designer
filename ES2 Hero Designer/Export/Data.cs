@@ -154,6 +154,27 @@ namespace ES2_Hero_Designer.Export
 </Datatable>";
         }
 
+        public static List<string> GetIconList(string dir)
+        {
+            List<string> list = new List<string>();
+            foreach (var item in Directory.GetFiles($"{dir}Public\\", "GuiElements[HeroSkills*].xml", SearchOption.AllDirectories))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(item);
+                XmlElement root = doc.DocumentElement;
+                XmlNodeList nodes = root.SelectNodes("//ExtendedGuiElement/Icons");
+                foreach (XmlNode node in nodes)
+                {
+                    if (node["Icon"].GetAttribute("Size") == "Small")
+                    {
+                        list.Add(node["Icon"].GetAttribute("Path"));
+                    }
+                }
+            }
+            list.Sort();
+            return list;
+        }
+
         public static List<HeroSkill> GetSkillList(string dir)
         {
             var sims = GetSimList(dir);

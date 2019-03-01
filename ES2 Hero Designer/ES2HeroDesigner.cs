@@ -15,6 +15,7 @@ namespace ES2_Hero_Designer
     {
         private string name = null;
         List<HeroSkill> allSkills = null;
+        List<string> Icons = null;
         public ES2_Hero_Designer()
         {
             InitializeComponent();
@@ -28,10 +29,27 @@ namespace ES2_Hero_Designer
                 fs.Close();
                 TB_GameDir_Dir.Text = lst.Dir;
                 Tb_WsAuthor.Text = lst.WSAuth;
+                CLB_Skills.Items.AddRange(lst.Skills);
+                CLB_Skill_Trees.Items.AddRange(lst.Skilltrees);
+                foreach (SkillTree item in CLB_Skill_Trees.Items)
+                {
+                    Cb_SkillTree1.Items.Add(item.Name);
+                    Cb_SkillTree2.Items.Add(item.Name);
+                    Cb_SkillTree3.Items.Add(item.Name);
+                }
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Unable to find or load previous data, data will not be loaded \n {e.Message}", "Warning, Data could not be loaded", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                
+                if (File.Exists("LastSession.dat"))
+                {
+                    MessageBox.Show($"Unable to load previous data (Maybe from an older version), data will not be loaded. Please restart the application. \n Error Msg: {e.Message}", "Warning, Data could not be loaded", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    File.Delete("LastSession.dat");
+                }
+                else
+                {
+                    MessageBox.Show($"Unable to find previous data, data will not be loaded", "Warning, Data could not be loaded", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
 
         }
@@ -74,7 +92,23 @@ namespace ES2_Hero_Designer
         {
             try
             {
-                var lst = new LastSes() { Dir = TB_GameDir_Dir.Text, WSAuth = Tb_WsAuthor.Text };
+                LastSes lst = null;
+                if (CLB_Skills.Items.Count < 1 && CLB_Skill_Trees.Items.Count < 1)
+                {
+                    lst = new LastSes() { Dir = TB_GameDir_Dir.Text, WSAuth = Tb_WsAuthor.Text, Skills = new CustomSkill[0], Skilltrees = new SkillTree[0] };
+                }
+                else if (CLB_Skill_Trees.Items.Count < 1)
+                {
+                    lst = new LastSes() { Dir = TB_GameDir_Dir.Text, WSAuth = Tb_WsAuthor.Text, Skills = CLB_Hero_Skills.Items.OfType<CustomSkill>().ToArray(), Skilltrees = new SkillTree[0] };
+                }
+                else if (CLB_Skills.Items.Count < 1)
+                {
+                    lst = new LastSes() { Dir = TB_GameDir_Dir.Text, WSAuth = Tb_WsAuthor.Text, Skills = new CustomSkill[0], Skilltrees = CLB_Skill_Trees.Items.OfType<SkillTree>().ToArray() };
+                }
+                else
+                {
+                    lst = new LastSes() { Dir = TB_GameDir_Dir.Text, WSAuth = Tb_WsAuthor.Text, Skills = CLB_Hero_Skills.Items.OfType<CustomSkill>().ToArray(), Skilltrees = CLB_Skill_Trees.Items.OfType<SkillTree>().ToArray() };
+                }                
                 FileStream fs = new FileStream("LastSession.dat", FileMode.Create);
                 BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(fs, lst);
@@ -82,7 +116,7 @@ namespace ES2_Hero_Designer
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"There was an error saving program data, current data input will be lost on restart \n {ex.Message}", "Error, Data could not be saved", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"There was an error saving program data, current data input will be lost on restart \n Error Msg: {ex.Message}", "Error, Data could not be saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             var folderBrowserDialog1 = new FolderBrowserDialog();
 
@@ -132,7 +166,7 @@ namespace ES2_Hero_Designer
 
 
                 FileStructure.CreateFolders(folderName, this.Tb_WsTitle.Text);
-                FileStructure.CreateFiles(folderName, this.Tb_WsTitle.Text, this.Tb_Name.Text, this.Tb_Description.Text, this.Tb_WsTitle.Text, this.Tb_WsDescription.Text, this.Tb_WsAuthor.Text, this.Tb_WsReleaseNotes.Text, this.Cb_Affinity.Text, this.Cb_Class.Text, this.Cb_Politics.Text, this.Cb_ShipDesign.Text, this.Cb_SkillTree1.Text, this.Cb_SkillTree2.Text, this.Cb_SkillTree3.Text, Large, Medium, Mood, Mod, CLB_Hero_Skills.Items.OfType<CustomSkill>().ToList(), CLB_Skill_Trees.Items.OfType<SkillTree>().ToList());
+                FileStructure.CreateFiles(folderName, this.Tb_WsTitle.Text, this.Tb_Name.Text, this.Tb_Description.Text, this.Tb_WsTitle.Text, this.Tb_WsDescription.Text, this.Tb_WsAuthor.Text, this.Tb_WsReleaseNotes.Text, this.Cb_Affinity.Text, this.Cb_Class.Text, this.Cb_Politics.Text, this.Cb_ShipDesign.Text, this.Cb_SkillTree1.Text, this.Cb_SkillTree2.Text, this.Cb_SkillTree3.Text, Large, Medium, Mood, Mod, CLB_Hero_Skills.Items.OfType<CustomHeroSkill>().ToList(), CLB_Skill_Trees.Items.OfType<SkillTree>().ToList());
                 if (CLB_HeroDebug.Items.Count != 0)
                 {
                     File.WriteAllText($"{folderName}{this.Tb_WsTitle.Text}\\Simulation\\FactionTraits.xml", Data.GetXMLFactionDebug(TB_GameDir_Dir.Text, ref CLB_HeroDebug));
@@ -169,8 +203,8 @@ namespace ES2_Hero_Designer
         {
             if (File.Exists($"{TB_GameDir_Dir.Text}EndlessSpace2.exe"))
             {
-                LB_GameDir_Info.Text = "Found";
-                LB_GameDir_Info.ForeColor = Color.Green;
+                LB_GameDir_Info.Text = "Found, Loading...";
+                LB_GameDir_Info.ForeColor = Color.Orange;
             }
             else if (File.Exists($"{TB_GameDir_Dir.Text}\\EndlessSpace2.exe"))
             {
@@ -212,7 +246,10 @@ namespace ES2_Hero_Designer
                 Cb_SkillTree2.Items.AddRange(Cb_SkillTree1.Items.Cast<Object>().ToArray());
                 Cb_SkillTree3.Items.AddRange(Cb_SkillTree1.Items.Cast<Object>().ToArray());
                 CB_HeroFaction.Items.AddRange(Data.GetListFactionDebug(TB_GameDir_Dir.Text).ToArray());
+                Icons = Data.GetIconList(TB_GameDir_Dir.Text);
                 allSkills = Data.GetSkillList(TB_GameDir_Dir.Text);
+                LB_GameDir_Info.Text = "Found";
+                LB_GameDir_Info.ForeColor = Color.Green;
             }
             catch (Exception ex)
             {
@@ -280,7 +317,7 @@ namespace ES2_Hero_Designer
         private void BT_AddSkill_Click(object sender, EventArgs e)
         {
             this.Visible = false;
-            Skills skills = new Skills(TB_GameDir_Dir.Text, allSkills);
+            Skills skills = new Skills(TB_GameDir_Dir.Text, allSkills, Icons);
             skills.Show();
             skills.Focus();
             skills.FormClosing += Skills_FormClosing;
@@ -314,25 +351,26 @@ namespace ES2_Hero_Designer
         {
             if (CLB_Skills.CheckedItems.Count > 1)
             {
-                MessageBox.Show($"You can only edit one item at a time", "Error, Only select one item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"You can only edit one item at a time", "Error, Only select one item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             else if (CLB_Skills.CheckedItems.Count < 1)
             {
-                MessageBox.Show($"You must select an item to edit", "Error, Select atleast one item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"You must select an item to edit", "Error, Select atleast one item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             else
             {
                 var item = CLB_Skills.CheckedItems.OfType<CustomSkill>().Single();
                 CLB_Skills.Items.Remove(item);
-                var tmp = new Skills(TB_GameDir_Dir.Text, item);
+                var tmp = new Skills(TB_GameDir_Dir.Text, item, allSkills, Icons);
                 this.Visible = false;
                 tmp.Show();
                 tmp.Focus();
                 tmp.FormClosing += Skills2_FormClosing;
             }
         }
+
         private void Skills2_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.Visible = true;
@@ -355,7 +393,15 @@ namespace ES2_Hero_Designer
             {
                 MessageBox.Show($"Players have reported issues when using multiple heros with over 3 skills causing the games to crash", "Warning, Number of skills", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            CLB_Hero_Skills.Items.Add(CLB_Skills.Items.OfType<CustomSkill>().Where(x => x.Name == TB_Hero_Skills.Text).Single());
+            try
+            {
+                var transfer = CLB_Skills.Items.OfType<CustomSkill>().Where(x => x.Name == TB_Hero_Skills.Text).Single();
+                CLB_Hero_Skills.Items.Add(new CustomHeroSkill() { Name = transfer.Name, level = transfer.Levels.Where(x=> x.Level == TB_Hero_Level.Text).Single(), Desc = transfer.Desc, Icon = transfer.Icon });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"There was an error adding this skill to the hero \n Error Msg: {ex.Message}", "Error, Could not add skill", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void CLB_Skills_SelectedValueChanged(object sender, EventArgs e)
@@ -377,6 +423,9 @@ namespace ES2_Hero_Designer
             }
             foreach (var item in trash)
             {
+                Cb_SkillTree1.Items.Remove(item.Name);
+                Cb_SkillTree2.Items.Remove(item.Name);
+                Cb_SkillTree3.Items.Remove(item.Name);
                 CLB_Skill_Trees.Items.Remove(item);
             }
         }
@@ -385,12 +434,12 @@ namespace ES2_Hero_Designer
         {
             if (CLB_Skill_Trees.CheckedItems.Count > 1)
             {
-                MessageBox.Show($"You can only edit one item at a time", "Error, Only select one item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"You can only edit one item at a time", "Error, Only select one item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             else if (CLB_Skill_Trees.CheckedItems.Count < 1)
             {
-                MessageBox.Show($"You must select an item to edit", "Error, Select atleast one item", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"You must select an item to edit", "Error, Select atleast one item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             else
@@ -401,7 +450,7 @@ namespace ES2_Hero_Designer
                 this.Visible = false;
                 tmp.Show();
                 tmp.Focus();
-                tmp.FormClosing += Skills2_FormClosing;
+                tmp.FormClosing += SkillTree_FormClosing;
             }
         }
 
@@ -418,17 +467,24 @@ namespace ES2_Hero_Designer
         {
             this.Visible = true;
             var SkillTree = sender as SkillTrees;
-            if (SkillTree.Returnable() == null)
+            var tmp = SkillTree.Returnable();
+            if (tmp == null)
             {
                 return;
             }
-            this.CLB_Skills.Items.Add(SkillTree.Returnable(), false);
+            this.CLB_Skill_Trees.Items.Add(tmp, false);
+            if (!Cb_SkillTree1.Items.Contains(tmp))
+            {
+                Cb_SkillTree1.Items.Add(tmp.Name);
+                Cb_SkillTree2.Items.Add(tmp.Name);
+                Cb_SkillTree3.Items.Add(tmp.Name);
+            }
         }
 
         private void BT_RemoveHeroSkill_Click(object sender, EventArgs e)
         {
-            var trash = new List<CustomSkill>();
-            foreach (CustomSkill item in CLB_Hero_Skills.CheckedItems)
+            var trash = new List<CustomHeroSkill>();
+            foreach (CustomHeroSkill item in CLB_Hero_Skills.CheckedItems)
             {
                 trash.Add(item);
             }
@@ -438,18 +494,25 @@ namespace ES2_Hero_Designer
             }
         }
     }
+
     [Serializable]
     public class LastSes
     {
-        public string Dir;
-        public string WSAuth;
-        public List<HeroSkill> Skills;
-        public List<SkillTree> Skilltrees;
+        private string dir;
+        private string wSAuth;
+        public CustomSkill[] Skills;
+        public SkillTree[] Skilltrees;
+
+        public string WSAuth { get => wSAuth; set => wSAuth = value.Trim(); }
+        public string Dir { get => dir; set => dir = value.Trim(); }
     }
     public class DebugHero
     {
-        public string Faction;
-        public string Name;
+        private string faction;
+        private string name;
+
+        public string Name { get => name; set => name = value.Trim(); }
+        public string Faction { get => faction; set => faction = value.Trim(); }
 
         public override string ToString()
         {
@@ -468,26 +531,78 @@ namespace ES2_Hero_Designer
             return Skill;
         }
     }
+    [Serializable]
     public class SkillTree
     {
         private string name = "";
-        public Dictionary<int, HeroSkill> Skills;
+        private string desc = "";
+        private string red = "0";
+        private string green = "0";
+        private string blue = "0";
+        private string alpha = "255";
 
-        public string Name { get => name; set => name = value.Replace(" ", ""); }
+        public List<Tuple<int, CustomSkill>> Skills;
+
+        public string Alpha { get => alpha; set => alpha = value.Trim(); }
+        public string Blue { get => blue; set => blue = value.Trim(); }
+        public string Red { get => red; set => red = value.Trim(); }
+        public string Green { get => green; set => green = value.Trim(); }
+        public string Desc { get => desc; set => desc = value.Trim(); }
+        public string Name { get => name; set => name = value.Trim(); }
 
         public override string ToString()
         {
             return Name;
         }
     }
+    [Serializable]
     public class CustomSkill
     {
-        public string Name;
-        public string SkillXML;
-        public string SimDescXML;
+        private string name = "";
+        private string icon = "";
+        private string desc = "";
+        public List<SkillLevel> Levels;
+
+        public string Desc { get => desc; set => desc = value.Trim(); }
+        public string Icon { get => icon; set => icon = value.Trim(); }
+        public string Name { get => name; set => name = value.Trim(); }
+
         public override string ToString()
         {
-            return Name;
+            return $"{Name} (Levels: {Levels.Count})";
+        }
+    }
+    [Serializable]
+    public class CustomHeroSkill
+    {
+        private string name;
+        private string icon = "";
+        private string desc = "";
+        public SkillLevel level;
+
+        public string Desc { get => desc; set => desc = value.Trim(); }
+        public string Icon { get => icon; set => icon = value.Trim(); }
+        public string Name { get => name; set => name = value.Trim(); }
+
+        public override string ToString()
+        {
+            return $"{Name} (Level: {level.Level})";
+        }
+    }
+    [Serializable]
+    public class SkillLevel
+    {
+        private string level = "1";
+        private string skillXML;
+        private string simDescXML;
+
+        public string SimDescXML { get => simDescXML; set => simDescXML = value.Trim(); }
+        public string SkillXML { get => skillXML; set => skillXML = value.Trim(); }
+        public string Level { get => level; set => level = value.Trim(); }
+
+        public override string ToString()
+        {
+            return Level;
         }
     }
 }

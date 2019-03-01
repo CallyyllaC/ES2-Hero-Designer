@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace ES2_Hero_Designer.Export
@@ -31,31 +32,64 @@ namespace ES2_Hero_Designer.Export
                 Directory.CreateDirectory($"{Dir}{RootFolder}\\Simulation");
         }
 
-        public static void CreateFiles(string Dir, string RootFolder, string Name, string Desc, string WsTitle, string WsDesc, string WsAuth, string WsRelease, string Affinity, string Class, string Politics, string ShipDesign, string SkillTree1, string SkillTree2, string SkillTree3, byte[] Large, byte[] Medium, byte[] Mood, byte[] ModIcon, List<CustomSkill> skills, List<SkillTree> trees)
+        public static void CreateFiles(string Dir, string RootFolder, string Name, string Desc, string WsTitle, string WsDesc, string WsAuth, string WsRelease, string Affinity, string Class, string Politics, string ShipDesign, string SkillTree1, string SkillTree2, string SkillTree3, byte[] Large, byte[] Medium, byte[] Mood, byte[] ModIcon, List<CustomHeroSkill> skills, List<SkillTree> trees)
         {
             string NameMod = Name.Replace(" ", "");
 
             File.WriteAllText($"{Dir}{RootFolder}\\{NameMod}.xml", FormatXml(TemplateMain.Replace("%NameMod%", NameMod).Replace("%WsTitle%", WsTitle).Replace("%WsDescription%", WsDesc).Replace("%WsAuth%", WsAuth).Replace("%WsRelease%", WsRelease)));
             File.WriteAllBytes($"{Dir}{RootFolder}\\ModIcon.png", ModIcon);
 
-            File.WriteAllText($"{Dir}{RootFolder}\\Gui\\GuiElements.xml", FormatXml(TemplateGui.Replace("%NameMod%", NameMod)));
-
-            File.WriteAllText($"{Dir}{RootFolder}\\Localization\\english\\ES2_Localization_Locales.xml", FormatXml(TemplateLocales.Replace("%NameMod%", NameMod).Replace("%Name%", Name).Replace("%Desc%", Desc)));
 
             File.WriteAllBytes($"{Dir}{RootFolder}\\Resources\\Gui\\{NameMod}Large.png", Large);
             File.WriteAllBytes($"{Dir}{RootFolder}\\Resources\\Gui\\{NameMod}Medium.png", Medium);
             File.WriteAllBytes($"{Dir}{RootFolder}\\Resources\\Gui\\{NameMod}Mood.png", Mood);
 
             string skillslist = "";
-            foreach (CustomSkill item in skills)
+            string HeroSkillGui = "";
+            string HeroSkillLocales = "";
+            string HeroSkillLocalesAssets = @"<?xml version=""1.0"" encoding=""utf-8""?>
+<Datatable xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">";
+
+            foreach (CustomHeroSkill Item in skills)
             {
-                skillslist = skillslist + "\n" + $"<Skill Name=\"HeroSkill{item.Name}\" />";
+                skillslist = skillslist + "\n" + $"<Skill Name=\"{Item.Name}\" />";
+
+                HeroSkillGui = HeroSkillGui + @"<ExtendedGuiElement Name=""" + Item.Name + @"""> <Title>%" + Item.Name + @"_Title</Title> <Description>%" + Item.Name + @"_Description</Description> <Icons> <Icon Size=""Small"" Path=""" + Item.Icon + @""" /> </Icons> </ExtendedGuiElement>";
+
+                HeroSkillLocales = HeroSkillLocales + @"<LocalizationPair Name=""%" + Item.Name + @"_Title"">" + Item.Name.Replace("_", " ") + @"</LocalizationPair> <LocalizationPair Name=""%" + Item.Name + @"_Description"">" + Item.Desc + @"</LocalizationPair>";
             }
 
-             File.WriteAllText($"{Dir}{RootFolder}\\Simulation\\HeroDefinitions.xml", FormatXml(TemplateHero.Replace("%NameMod%", NameMod).Replace("%Affinity%", Affinity).Replace("%Class%", Class).Replace("%Politics%", Politics).Replace("%ShipDesign%", ShipDesign).Replace("%SkillTree1%", SkillTree1).Replace("%SkillTree2%", SkillTree2).Replace("%SkillTree3%", SkillTree3).Replace("%SkillsList%", skillslist)));
+            foreach (var tree in trees)
+            {
+                HeroSkillGui = HeroSkillGui + @"<ExtendedGuiElement Name=""" + tree.Name + @"""><Title>%" + tree.Name + @"Title</Title><Description>%" + tree.Name + @"Description</Description><Icons><Icon Size=""Small"" Path=""/Atlased/Hero/HeroesHeroesSmall"" /></Icons><Color Red=""" + tree.Red + @""" Green=""" + tree.Green + @""" Blue=""" + tree.Blue + @""" Alpha=""" + tree.Alpha + @"""/></ExtendedGuiElement><GuiElement Name=""Category" + tree.Name + @"""><Title>%Category" + tree.Name + @"Title</Title><Icons><Icon Size=""Small"" Path=""/Atlased/Hero/HeroesHeroesSmall"" /></Icons></GuiElement>";
 
-            TemplateSkill(Dir, RootFolder, skills);
-            //TemplateTree(Dir, RootFolder, trees);
+                HeroSkillGui = HeroSkillGui + @"<GuiElement Name=""Category" + tree.Name + @"""><Title>%Category" + tree.Name + @"Title</Title><Icons><Icon Size=""Small"" Path=""Bitmaps/Atlased/Affinities/AffinityPrimitivesSmall"" /></Icons></GuiElement>";
+
+                HeroSkillLocales = HeroSkillLocales + @"<LocalizationPair Name=""%Category" + tree.Name + @"Title"">" + tree.Name.Replace("_", " ") + @" Skill</LocalizationPair> <LocalizationPair Name=""%" + tree.Name + @"Title"">" + tree.Name.Replace("_", " ") + @"</LocalizationPair> <LocalizationPair Name=""%" + tree.Name + @"Description"">" + tree.Desc + @"</LocalizationPair>";
+
+                HeroSkillLocalesAssets = HeroSkillLocalesAssets + @"<LocalizationPair Name=""%" + tree.Name + @"Title"">" + tree.Name.Replace("_", " ") + @"</LocalizationPair><LocalizationPair Name=""%" + tree.Name + @"Description"">" + tree.Desc + @"</LocalizationPair>";
+
+                foreach (var skill in tree.Skills)
+                {
+                    skillslist = skillslist + "\n" + $"<Skill Name=\"{skill.Item2.Name}\" />";
+
+                    HeroSkillGui = HeroSkillGui + @"<ExtendedGuiElement Name=""" + skill.Item2.Name + @"""> <Title>%" + skill.Item2.Name + @"_Title</Title> <Description>%" + skill.Item2.Name + @"_Description</Description> <Icons> <Icon Size=""Small"" Path=""" + skill.Item2.Icon + @""" /> </Icons> </ExtendedGuiElement>";
+
+                    HeroSkillLocales = HeroSkillLocales + @"<LocalizationPair Name=""%" + skill.Item2.Name + @"_Title"">" + skill.Item2.Name.Replace("_"," ") + @"</LocalizationPair> <LocalizationPair Name=""%" + skill.Item2.Name + @"_Description"">" + skill.Item2.Desc + @"</LocalizationPair>";
+                }
+            }
+
+            HeroSkillLocalesAssets = HeroSkillLocalesAssets + @"</Datatable>";
+
+
+            File.WriteAllText($"{Dir}{RootFolder}\\Localization\\english\\ES2_Localization_Locales.xml", FormatXml(TemplateLocales.Replace("%NameMod%", NameMod).Replace("%Name%", Name).Replace("%Desc%", Desc).Replace("%HeroSkillLocales%", HeroSkillLocales)));
+            File.WriteAllText($"{Dir}{RootFolder}\\Localization\\english\\ES2_Localization_Assets_Locales.xml", FormatXml(HeroSkillLocalesAssets));
+            File.WriteAllText($"{ Dir}{RootFolder}\\Gui\\GuiElements.xml", FormatXml(TemplateGui.Replace("%NameMod%", NameMod).Replace("%HeroSkillTree%", HeroSkillGui)));
+            File.WriteAllText($"{Dir}{RootFolder}\\Simulation\\HeroDefinitions.xml", FormatXml(TemplateHero.Replace("%NameMod%", NameMod).Replace("%Affinity%", Affinity).Replace("%Class%", Class).Replace("%Politics%", Politics).Replace("%ShipDesign%", ShipDesign).Replace("%SkillTree1%", SkillTree1).Replace("%SkillTree2%", SkillTree2).Replace("%SkillTree3%", SkillTree3).Replace("%SkillsList%", skillslist)));
+
+            TemplateSkill(Dir, RootFolder, skills, trees);
+            TemplateTree(Dir, RootFolder, trees);
+            TemplateSim(Dir, RootFolder, skills, trees);
         }
 
 
@@ -75,14 +109,14 @@ namespace ES2_Hero_Designer.Export
         <ReleaseNotes>%WsRelease%</ReleaseNotes>
         <Tags>Gameplay, Heroes</Tags>
 
-		<Plugins>
-		
-            <DatabasePlugin DataType=""Amplitude.Unity.Gui.GuiElement, Assembly-CSharp-firstpass"">
-				<ExtraTypes>
-                    <ExtraType DataType=""HeroGuiElement, Assembly-CSharp"" />
-				</ExtraTypes>
-                <FilePath>Gui/GuiElements.xml</FilePath>
-			</DatabasePlugin>
+		<Plugins>		
+    		<DatabasePlugin DataType=""Amplitude.Unity.Gui.GuiElement, Assembly-CSharp-firstpass"">
+			    <ExtraTypes>
+		    			<ExtraType DataType=""HeroGuiElement, Assembly-CSharp"" />
+	    				<ExtraType DataType=""Amplitude.Unity.Gui.ExtendedGuiElement, Assembly-CSharp-firstpass"" />
+    			</ExtraTypes>
+			    <FilePath>Gui/GuiElements.xml</FilePath>
+		    </DatabasePlugin>
 
             <DatabasePlugin DataType=""HeroDefinition, Assembly-CSharp"">
                 <FilePath>Simulation/HeroDefinitions.xml</FilePath>
@@ -90,6 +124,10 @@ namespace ES2_Hero_Designer.Export
 
             <DatabasePlugin DataType=""HeroSkillDefinition, Assembly-CSharp"">
                 <FilePath>Simulation/HeroSkillDefinitions.xml</FilePath>
+            </DatabasePlugin>
+
+            <DatabasePlugin DataType=""HeroSkillTreeDefinition, Assembly-CSharp"">
+                <FilePath>Simulation/HeroSkillTreeDefinitions.xml</FilePath>
             </DatabasePlugin>
 			
 			<DatabasePlugin DataType=""Amplitude.Unity.Simulation.SimulationDescriptor, Assembly-CSharp-firstpass"">
@@ -124,7 +162,9 @@ namespace ES2_Hero_Designer.Export
             <Icon Size=""Mood"" Path=""Gui/%NameMod%Mood""/>
         </Icons>
     </HeroGuiElement>
-	
+
+    %HeroSkillTree%
+
 </Datatable>";
 
 
@@ -133,7 +173,7 @@ namespace ES2_Hero_Designer.Export
 
 	<LocalizationPair Name=""%%NameMod%Title"">%Name%</LocalizationPair>
 	<LocalizationPair Name=""%%NameMod%Description"">%Desc%</LocalizationPair>
-  
+  %HeroSkillLocales%
 </Datatable>";
 
 
@@ -160,55 +200,94 @@ namespace ES2_Hero_Designer.Export
 </Datatable>";
 
 
-        private static void TemplateSkill(string Dir, string RootFolder, List<CustomSkill> list)
+        private static void TemplateSkill(string Dir, string RootFolder, List<CustomHeroSkill> list, List<SkillTree> treelist)
         {
             string x = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
   <Datatable xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xsi:noNamespaceSchemaLocation=""../Documentation/Schemas/HeroSkillDefinition.xsd"">
 ";
-            string y = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
-  <Datatable xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xsi:noNamespaceSchemaLocation=""../Documentation/Schemas/Amplitude.Unity.Simulation.SimulationDescriptor.xsd"">
-";
-
-            foreach (CustomSkill item in list)
+            foreach (CustomHeroSkill skill in list)
             {
-                string intro = @"<HeroSkillDefinition Name=""HeroSkill%SkillName%""> <SkillLevel Name=""HeroSkill%SkillName%_1"">";
-                string outro = @"</SkillLevel> </HeroSkillDefinition>";
-                x = $"{x}\n{intro.Replace("%SkillName%", item.Name)}{item.SkillXML.Replace("%SkillName%", item.Name)}{outro}";
-                y = $"{y}\n{item.SimDescXML.Replace("%SkillName%", item.Name)}";
+                x = x + @"<HeroSkillDefinition Name=""" + skill.Name + @"""> ";//HEROSKILL
+                string intro = @"<SkillLevel Name=""%SkillName%_%SkillLevel%"">";//HEROSKILL
+                string outro = @"</SkillLevel>";
+                x = $"{x}\n{intro.Replace("%SkillName%", skill.Name).Replace("%SkillLevel%", skill.level.Level)}{skill.level.SkillXML.Replace("%SkillName%", skill.Name + "_" + skill.level.Level).Replace("%SkillLevel%", skill.level.Level)}{outro}";
+                x = x + @"</HeroSkillDefinition>";
             }
-            x = x + "</Datatable>";
-            y = y + "</Datatable>";
-            x = FormatXml(x);
-            y = FormatXml(y);
 
-            File.WriteAllText($"{Dir}{RootFolder}\\Simulation\\HeroSkillDefinitions.xml", x);
-            File.WriteAllText($"{Dir}{RootFolder}\\Simulation\\SimulationDescriptors.xml", y);
-        }
-
-        /*private static void TemplateTree(string Dir, string RootFolder, List<SkillTree> list)
-        {
-            string x = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
-  <Datatable xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xsi:noNamespaceSchemaLocation=""../Documentation/Schemas/HeroSkillDefinition.xsd"">
-";
-            string y = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
-  <Datatable xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xsi:noNamespaceSchemaLocation=""../Documentation/Schemas/Amplitude.Unity.Simulation.SimulationDescriptor.xsd"">
-";
-
-            foreach (SkillTree tree in list)
+            foreach (SkillTree tree in treelist)
             {
-                foreach (var skill in tree.Skills)
+                foreach (Tuple<int, CustomSkill> skill in tree.Skills)
                 {
-                    x = $"{x}\n{skill.Value.XML}";
-                    y = $"{y}\n{skill.Value.SimDesc}";
+                    x = x + @"<HeroSkillDefinition Name=""" + skill.Item2.Name + @""">";
+                    foreach (SkillLevel level in skill.Item2.Levels)
+                    {
+                        x = x + @"<SkillLevel Name=""" + $"{skill.Item2.Name}_{level.Level}" + @""">";
+                        x = x + level.SkillXML.Replace("%SkillLevel%", level.Level).Replace("%SkillName%", skill.Item2.Name + "_" + level.Level);
+                        x = x + @"</SkillLevel>";
+                    }
+                    x = x + @"</HeroSkillDefinition>";
                 }
             }
 
+            x = x + " </Datatable>";
             x = FormatXml(x);
-            y = FormatXml(y);
 
             File.WriteAllText($"{Dir}{RootFolder}\\Simulation\\HeroSkillDefinitions.xml", x);
+        }
+
+        private static void TemplateSim(string Dir, string RootFolder, List<CustomHeroSkill> list, List<SkillTree> treelist)
+        {
+            string y = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+  <Datatable xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xsi:noNamespaceSchemaLocation=""../Documentation/Schemas/Amplitude.Unity.Simulation.SimulationDescriptor.xsd"">
+";
+
+            foreach (CustomHeroSkill skill in list)
+            {
+                y = $"{y}\n{skill.level.SimDescXML.Replace("%SkillName%", skill.Name + "_" + skill.level.Level)}";
+            }
+            foreach (SkillTree tree in treelist)
+            {
+                foreach (Tuple<int, CustomSkill> skill in tree.Skills)
+                {
+                    foreach (SkillLevel level in skill.Item2.Levels)
+                    {
+                        y = $"{y}\n{level.SimDescXML.Replace("%SkillName%", skill.Item2.Name + "_" + level.Level)}";
+                    }
+                }
+            }
+
+            y = y + "</Datatable>";
+            y = FormatXml(y);
+
             File.WriteAllText($"{Dir}{RootFolder}\\Simulation\\SimulationDescriptors.xml", y);
-        }*/
+        }
+
+        private static void TemplateTree(string Dir, string RootFolder, List<SkillTree> list)
+        {
+            string x = @"<?xml version=""1.0"" encoding=""utf-8"" ?>
+  <Datatable xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xsi:noNamespaceSchemaLocation=""../Schemas/HeroSkillTreeDefinition.xsd"">
+          ";
+
+            foreach (SkillTree tree in list)
+            {
+                var stages = tree.Skills.GroupBy(c => c.Item1).Select(c => c.ToList()).ToList();
+                x = x + @"<HeroSkillTreeDefinition Name=""" + tree.Name + @""">";
+                foreach (var stage in stages)
+                {
+                    x = x + @"<Stage Level=""" + stage[0].Item1 + @""">";
+                    foreach (var skill in stage)
+                    {
+                        x = x + @"<Skill> <SkillDefinition Name=""" + skill.Item2.Name + @"""/> </Skill>";
+                    }
+                    x = x + @"</Stage>";
+                }
+                x = x + @"</HeroSkillTreeDefinition>";
+            }
+            x = x + "</Datatable>";
+            x = FormatXml(x);
+
+            File.WriteAllText($"{Dir}{RootFolder}\\Simulation\\HeroSkillTreeDefinitions.xml", x);
+        }
 
         public static string FormatXml(string xml)
         {
