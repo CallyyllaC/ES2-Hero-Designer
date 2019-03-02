@@ -64,11 +64,13 @@ namespace ES2_Hero_Designer
             }
 
             CB_Icon.Items.AddRange(Icons.ToArray());
+            CB_SkillFile.Items.AddRange(groups.ToArray());
 
             CB_Levels.Items.AddRange(loaded.Levels.ToArray());
             CB_Levels.SelectedIndex = 0;
             TB_Skill_Name.Text = loaded.Name;
             TB_Desc.Text = loaded.Desc;
+            CB_Icon.Text = loaded.Icon;
 
             ToolTips.AutoPopDelay = 5000;
             ToolTips.InitialDelay = 250;

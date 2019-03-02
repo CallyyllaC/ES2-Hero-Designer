@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SkillTrees));
             this.BT_Add = new System.Windows.Forms.Button();
             this.TBL_Skilltree = new System.Windows.Forms.DataGridView();
             this.CB_Custom_Skills = new System.Windows.Forms.ComboBox();
@@ -264,6 +265,7 @@
             this.Controls.Add(this.CB_Custom_Skills);
             this.Controls.Add(this.TBL_Skilltree);
             this.Controls.Add(this.BT_Add);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SkillTrees";
             this.Text = "SkillTree";
             ((System.ComponentModel.ISupportInitialize)(this.TBL_Skilltree)).EndInit();

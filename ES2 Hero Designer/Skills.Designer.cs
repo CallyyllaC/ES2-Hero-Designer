@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Skills));
             this.GrpBox_Skill = new System.Windows.Forms.GroupBox();
             this.LB_Icon = new System.Windows.Forms.Label();
             this.CB_Icon = new System.Windows.Forms.ComboBox();
@@ -294,6 +295,7 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1264, 600);
             this.Controls.Add(this.GrpBox_Skill);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Skills";
             this.Text = "Skills";
             this.GrpBox_Skill.ResumeLayout(false);

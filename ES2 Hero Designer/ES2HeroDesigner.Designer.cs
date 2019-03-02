@@ -100,7 +100,6 @@
             this.BT_SkillTree_Edit = new System.Windows.Forms.Button();
             this.BT_SkillTree_Remove = new System.Windows.Forms.Button();
             this.BT_SkillTree_Add = new System.Windows.Forms.Button();
-            this.LB_Trees = new System.Windows.Forms.Label();
             this.CLB_Skill_Trees = new System.Windows.Forms.CheckedListBox();
             this.LB_Help = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -770,7 +769,6 @@
             this.GrpBox_SkillTrees.Controls.Add(this.BT_SkillTree_Edit);
             this.GrpBox_SkillTrees.Controls.Add(this.BT_SkillTree_Remove);
             this.GrpBox_SkillTrees.Controls.Add(this.BT_SkillTree_Add);
-            this.GrpBox_SkillTrees.Controls.Add(this.LB_Trees);
             this.GrpBox_SkillTrees.Controls.Add(this.CLB_Skill_Trees);
             this.GrpBox_SkillTrees.Enabled = false;
             this.GrpBox_SkillTrees.Location = new System.Drawing.Point(1167, 551);
@@ -809,15 +807,6 @@
             this.BT_SkillTree_Add.Text = "Add";
             this.BT_SkillTree_Add.UseVisualStyleBackColor = true;
             this.BT_SkillTree_Add.Click += new System.EventHandler(this.BT_SkillTree_Add_Click);
-            // 
-            // LB_Trees
-            // 
-            this.LB_Trees.AutoSize = true;
-            this.LB_Trees.Location = new System.Drawing.Point(6, 16);
-            this.LB_Trees.Name = "LB_Trees";
-            this.LB_Trees.Size = new System.Drawing.Size(24, 13);
-            this.LB_Trees.TabIndex = 100;
-            this.LB_Trees.Text = "tmp";
             // 
             // CLB_Skill_Trees
             // 
@@ -908,7 +897,6 @@
             this.GrpBox_HeroSkills.ResumeLayout(false);
             this.GrpBox_HeroSkills.PerformLayout();
             this.GrpBox_SkillTrees.ResumeLayout(false);
-            this.GrpBox_SkillTrees.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -980,7 +968,6 @@
         private System.Windows.Forms.CheckedListBox CLB_Hero_Skills;
         private System.Windows.Forms.Button BT_AddHeroSkill;
         private System.Windows.Forms.GroupBox GrpBox_SkillTrees;
-        private System.Windows.Forms.Label LB_Trees;
         private System.Windows.Forms.CheckedListBox CLB_Skill_Trees;
         private System.Windows.Forms.Label LB_Help;
         private System.Windows.Forms.Button BT_RemoveHeroSkill;
